@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Role-Play: Select Your Situation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom Thin Red Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C20000;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a30000;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #FFEBEB;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .card {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            background: #C20000;
+            padding: 24px;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            opacity: 0.95;
+            font-weight: 400;
+            font-size: 0.9rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .controls-bar {
+            padding: 20px 24px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fff;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        @media (min-width: 768px) {
+            .controls-bar {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 24px 32px 12px;
+            }
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .search-container {
+                max-width: 320px;
+            }
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 2px solid #f3f4f6;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            color: #1f2937;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: #fecaca;
+            background: #fffafa;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            pointer-events: none;
+            width: 16px;
+            height: 16px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none; /* Safari and Chrome */
+        }
+
+        .filter-btn {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .filter-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .filter-btn.active {
+            background: #C20000;
+            color: white;
+            box-shadow: 0 4px 10px rgba(194, 0, 0, 0.25);
+        }
+
+        .content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @media (min-width: 768px) {
+            .content {
+                padding: 32px;
+            }
+            .header {
+                padding: 32px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 640px) {
+            .situations-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .situations-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Situations Cards CSS styling */
+        .situation-card {
+            background: #ffffff;
+            border: 2px solid #f3f4f6;
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            text-decoration: none; /* Ensures link styling behavior is reset */
+            color: inherit;
+        }
+
+        .situation-card:hover {
+            border-color: #fca5a5;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(194, 0, 0, 0.08);
+        }
+
+        .situation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            transition: background-color 0.3s ease;
+        }
+
+        .situation-card.beginner::before { background: #10b981; } /* Green */
+        .situation-card.intermediate::before { background: #f59e0b; } /* Yellow/Orange */
+        .situation-card.advanced::before { background: #3b82f6; } /* Blue */
+
+        .card-top {
+            margin-bottom: 16px;
+        }
+
+        .badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .difficulty-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .beginner .difficulty-badge {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .intermediate .difficulty-badge {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .advanced .difficulty-badge {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .icon-wrapper {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #fff1f1;
+            color: #C20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .situation-card:hover .icon-wrapper {
+            background: #C20000;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .situation-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .situation-desc {
+            font-size: 0.78rem;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .details-item {
+            font-size: 0.72rem;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .details-item svg {
+            color: #9ca3af;
+        }
+
+        .card-action-btn {
+            background: #fcfcfc;
+            border: 2px solid #e5e7eb;
+            color: #374151;
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .situation-card:hover .card-action-btn {
+            background: #C20000;
+            color: white;
+            border-color: #C20000;
+            box-shadow: 0 4px 12px rgba(194, 0, 0, 0.2);
+        }
+
+        /* Bottom helper message */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+            display: none;
+        }
+
+        .empty-state svg {
+            color: #d1d5db;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        /* WhatsApp callout design */
+        .whatsapp-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 16px;
+        }
+
+        .whatsapp-link {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .whatsapp-link:hover, .whatsapp-link:active {
+            color: #C20000;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #6b7280;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- Header Section -->
+    <div class="header">
+        <h1>
+            <i data-lucide="compass"></i>
+            English Role-Play 
+        </h1>
+        <p>Escolha uma situação da vida real para praticar sua conversação, treinar sua pronúncia e ganhar confiança!</p>
+    </div>
+
+    <div class="controls-bar">
+        <!-- Search bar -->
+        <div class="search-container">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar situação...">
+        </div>
+
+        <!-- Filter tabs matching level colors -->
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-btn active" data-filter="all">Todas</button>
+            <button class="filter-btn" data-filter="beginner">Iniciante</button>
+            <button class="filter-btn" data-filter="intermediate">Intermediário</button>
+            <button class="filter-btn" data-filter="advanced">Avançado</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Situations Grid Container -->
+        <div class="situations-grid" id="situationsGrid">
+            
+            <!-- CARD 1: At the Hotel -->
+            <a href="#" class="situation-card beginner" data-level="beginner" data-title="at the hotel" data-link="hotel">
+                <div class="card-top">
+                    <div class="badge-row">
+                        <span class="difficulty-badge">Iniciante</span>
+                        <div class="icon-wrapper">
+                            <i data-lucide="hotel"></i>
+                        </div>
+                    </div>
+                    <h3 class="situation-title">At the Hotel</h3>
+                    <p class="situation-desc">Faça o check-in no hotel de sua preferência, interaja com o recepcionista e garanta suas chaves.</p>
+                    <ul class="details-list">
+                        <li class="details-item"><i data-lucide="clock" style="width:12px;height:12px;"></i> 5 etapas interativas</li>
+                        <li class="details-item"><i data-lucide="check-square" style="width:12px;height:12px;"></i> Foco: Check-in &amp; ID</li>
+                    </ul>
+                </div>
+                <div class="card-action-btn">
+                    Iniciar Prática
+                    <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </div>
+            </a>
+
+            <!-- CARD 2: Restaurant Booking -->
+            <a href="#" class="situation-card beginner" data-level="beginner" data-title="at the restaurant ordering dinner" data-link="restaurant">
+                <div class="card-top">
+                    <div class="badge-row">
+                        <span class="difficulty-badge">Iniciante</span>
+                        <div class="icon-wrapper">
+                            <i data-lucide="utensils"></i>
+                        </div>
+                    </div>
+                    <h3 class="situation-title">At the Restaurant</h3>
+                    <p class="situation-desc">Peça uma refeição ao garçom, faça perguntas sobre o cardápio e finalize solicitando a conta.</p>
+                    <ul class="details-list">
+                        <li class="details-item"><i data-lucide="clock" style="width:12px;height:12px;"></i> 3 etapas interativas</li>
+                        <li class="details-item"><i data-lucide="check-square" style="width:12px;height:12px;"></i> Foco: Vocabulário de comida</li>
+                    </ul>
+                </div>
+                <div class="card-action-btn">
+                    Iniciar Prática
+                    <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </div>
+            </a>
+
+            <!-- CARD 3: Checking Baggage -->
+            <a href="#" class="situation-card intermediate" data-level="intermediate" data-title="airport checking baggage check-in flight" data-link="airport">
+                <div class="card-top">
+                    <div class="badge-row">
+                        <span class="difficulty-badge">Intermediário</span>
+                        <div class="icon-wrapper">
+                            <i data-lucide="plane"></i>
+                        </div>
+                    </div>
+                    <h3 class="situation-title">At the Airport</h3>
+                    <p class="situation-desc">Despache suas malas no balcão de atendimento, entenda as instruções do agente e pegue o cartão de embarque.</p>
+                    <ul class="details-list">
+                        <li class="details-item"><i data-lucide="clock" style="width:12px;height:12px;"></i> 5 etapas interativas</li>
+                        <li class="details-item"><i data-lucide="check-square" style="width:12px;height:12px;"></i> Foco: Bagagem &amp; Viagem</li>
+                    </ul>
+                </div>
+                <div class="card-action-btn">
+                    Iniciar Prática
+                    <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </div>
+            </a>
+
+            <!-- CARD 4: Asking Directions -->
+            <a href="#" class="situation-card beginner" data-level="beginner" data-title="asking directions street map find location" data-link="directions">
+                <div class="card-top">
+                    <div class="badge-row">
+                        <span class="difficulty-badge">Iniciante</span>
+                        <div class="icon-wrapper">
+                            <i data-lucide="map-pin"></i>
+                        </div>
+                    </div>
+                    <h3 class="situation-title">Asking Directions</h3>
+                    <p class="situation-desc">Aprenda a pedir informações na rua para encontrar o metrô, o museu ou pontos turísticos cruciais.</p>
+                    <ul class="details-list">
+                        <li class="details-item"><i data-lucide="clock" style="width:12px;height:12px;"></i> 4 etapas interativas</li>
+                        <li class="details-item"><i data-lucide="check-square" style="width:12px;height:12px;"></i> Foco: Localização &amp; Cidade</li>
+                    </ul>
+                </div>
+                <div class="card-action-btn">
+                    Iniciar Prática
+                    <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </div>
+            </a>
+
+            <!-- CARD 5: Clothes Shopping -->
+            <a href="#" class="situation-card intermediate" data-level="intermediate" data-title="clothes shopping size discount store buy" data-link="shopping">
+                <div class="card-top">
+                    <div class="badge-row">
+                        <span class="difficulty-badge">Intermediário</span>
+                        <div class="icon-wrapper">
+                            <i data-lucide="shopping-bag"></i>
+                        </div>
+                    </div>
+                    <h3 class="situation-title">Shopping Clothes</h3>
+                    <p class="situation-desc">Interaja com o vendedor da loja, solicite tamanhos diferentes, cores variadas e pergunte sobre descontos.</p>
+                    <ul class="details-list">
+                        <li class="details-item"><i data-lucide="clock" style="width:12px;height:12px;"></i> 5 etapas interativas</li>
+                        <li class="details-item"><i data-lucide="check-square" style="width:12px;height:12px;"></i> Foco: Compras &amp; Preços</li>
+                    </ul>
+                </div>
+                <div class="card-action-btn">
+                    Iniciar Prática
+                    <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </div>
+            </a>
+
+            <!-- CARD 6: Job Interview -->
+            <a href="#" class="situation-card advanced" data-level="advanced" data-title="job interview professional english questions resume" data-link="interview">
+                <div class="card-top">
+                    <div class="badge-row">
+                        <span class="difficulty-badge">Avançado</span>
+                        <div class="icon-wrapper">
+                            <i data-lucide="briefcase"></i>
+                        </div>
+                    </div>
+                    <h3 class="situation-title">Job Interview</h3>
+                    <p class="situation-desc">Simule uma entrevista profissional em inglês. Responda a perguntas desafiadoras sobre sua carreira.</p>
+                    <ul class="details-list">
+                        <li class="details-item"><i data-lucide="clock" style="width:12px;height:12px;"></i> 6 etapas interativas</li>
+                        <li class="details-item"><i data-lucide="check-square" style="width:12px;height:12px;"></i> Foco: Linguagem corporativa</li>
+                    </ul>
+                </div>
+                <div class="card-action-btn">
+                    Iniciar Prática
+                    <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Empty search results feedback -->
+        <div class="empty-state" id="emptyState">
+            <i data-lucide="frown" style="width: 48px; height: 48px;"></i>
+            <p style="margin-top: 10px;">Nenhuma situação encontrada com este termo ou filtro.</p>
+        </div>
+
+        <!-- Discretely styled callout and links container -->
+        <div class="whatsapp-container">
+            <a href="https://wa.me/5516993272278" target="_blank" class="whatsapp-link">
+                Quero ser aluno da Di
+            </a>
+        </div>
+
+        <hr>
+        <div class="footer-note">
+            <i data-lucide="info"></i> Desenvolvido por @dicarvalho.prof. 2026
+        </div>
+    </div>
+</div>
+
+<script>
+    // Configuração dos links de destino de cada card.
+    // Substitua os links fictícios pelos links reais onde seus frames de roleplay estão hospedados!
+    const linksConfig = {
+        hotel: "http://dididoingles.github.io/roleplaycv/hotel.html", 
+        restaurant: "http://dididoingles.github.io/roleplaycv/restaurant.html",
+        airport: "http://dididoingles.github.io/roleplaycv/airport.html",
+        directions: "http://dididoingles.github.io/roleplaycv/directions.html",
+        shopping: "http://dididoingles.github.io/roleplaycv/shop.html",
+        interview: "http://dididoingles.github.io/roleplaycv/interview.html"
+    };
+
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const situationCards = document.querySelectorAll('.situation-card');
+    const emptyState = document.getElementById('emptyState');
+
+    let currentFilter = 'all';
+    let currentSearchTerm = '';
+
+    // Inicialização do Lucide Icons
+    lucide.createIcons();
+
+    // Redirecionamento dinâmico ao clicar nos cards
+    situationCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            const identifier = this.getAttribute('data-link');
+            const targetUrl = linksConfig[identifier] || "#";
+            
+            // Abre o link do simulador correspondente. Como costuma rodar dentro de iFrame,
+            // podemos abrir em uma nova aba (_blank) ou manter na mesma página se desejar (_self).
+            window.open(targetUrl, '_blank');
+        });
+    });
+
+    // Função para aplicar os filtros combinados de pesquisa e nível
+    function applyFilters() {
+        let visibleCount = 0;
+
+        situationCards.forEach(card => {
+            const cardLevel = card.getAttribute('data-level');
+            const cardTitle = card.getAttribute('data-title');
+            const cardContent = card.innerText.toLowerCase();
+
+            const matchesFilter = (currentFilter === 'all' || cardLevel === currentFilter);
+            const matchesSearch = cardContent.includes(currentSearchTerm);
+
+            if (matchesFilter && matchesSearch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Toggle visual feedback para buscas vazias
+        if (visibleCount === 0) {
+            emptyState.style.display = 'block';
+        } else {
+            emptyState.style.display = 'none';
+        }
+    }
+
+    // Monitor do campo de busca
+    searchInput.addEventListener('input', (e) => {
+        currentSearchTerm = e.target.value.toLowerCase().trim();
+        applyFilters();
+    });
+
+    // Monitor dos botões de abas de filtro
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active style from all
+            filterButtons.forEach(b => b.classList.remove('active'));
+            // Add active style to target
+            this.classList.add('active');
+
+            currentFilter = this.getAttribute('data-filter');
+            applyFilters();
+        });
+    });
+</script>
+</body>
+</html>
