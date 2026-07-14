@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Role-Play: English Conversation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom Thin Red Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C20000;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a30000;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #FFEBEB;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .card {
+            max-width: 950px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+
+        .header {
+            background: #C20000;
+            padding: 20px;
+            color: white;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            opacity: 0.9;
+            font-weight: 400;
+            font-size: 0.8rem;
+        }
+
+        .content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @media (min-width: 768px) {
+            .content {
+                padding: 32px;
+            }
+            .header {
+                padding: 24px 32px;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+           
+        }
+
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-steps {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            margin-bottom: 12px;
+        }
+
+        .step {
+            background: #e5e7eb;
+            color: #374151;
+            padding: 6px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            max-width: 60px;
+            flex: 0 0 auto;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @media (min-width: 480px) {
+            .step {
+                padding: 8px 18px;
+                max-width: 100px;
+                font-size: 0.85rem;
+                gap: 20px;
+            }
+        }
+
+        .step:hover {
+            background: #d1d5db;
+        }
+
+        .step.active {
+            background: #C20000;
+            color: white;
+            box-shadow: 0 4px 12px rgba(194, 0, 0, 0.4);
+        }
+
+        .step.completed {
+            background: #22c55e;
+            color: white;
+        }
+
+        /* Interactive Speech & UI Elements */
+        .waiter-bubble {
+            background: #f3f4f6;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #374151;
+            position: relative;
+        }
+
+        .waiter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .waiter-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .waiter-text {
+            font-size: 1rem;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        @media (min-width: 768px) {
+            .waiter-bubble {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            .waiter-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Student response area */
+        .student-response-area {
+            background: #fef2f2;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #fecaca;
+        }
+
+        @media (min-width: 768px) {
+            .student-response-area {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .student-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            color: #C20000;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .target-line {
+            background: white;
+            padding: 14px;
+            border-radius: 16px;
+            margin: 14px 0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #C20000;
+            border: 1px solid #fecaca;
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .target-line {
+                padding: 16px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        .mic-area {
+            background: #f9fafb;
+            border-radius: 18px;
+            padding: 16px;
+            text-align: center;
+            margin: 14px 0;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        button {
+            font-family: 'Poppins', sans-serif;
+            background: #C20000;
+            border: none;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 14px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(194, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 480px) {
+            button {
+                width: auto;
+                padding: 12px 28px;
+                font-size: 1rem;
+            }
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(194, 0, 0, 0.5);
+            background: #a30000;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .text-btn {
+            background: transparent;
+            color: #374151;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            box-shadow: none;
+            border: 1px solid #d1d5db;
+            border-radius: 30px;
+            width: auto;
+        }
+
+        .text-btn:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .icon-only-btn {
+            background: transparent;
+            color: #374151;
+            padding: 6px;
+            box-shadow: none;
+            width: auto;
+            border-radius: 50%;
+        }
+
+        .icon-only-btn:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .next-btn {
+            background: #1f2937;
+            box-shadow: 0 4px 12px rgba(31, 41, 55, 0.3);
+            width: 100%;
+            margin-top: 8px;
+            max-width: 100%;
+        }
+
+        .next-btn:hover {
+            background: #111827;
+        }
+
+        .transcript-box {
+            background: white;
+            border-radius: 14px;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #e5e7eb;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .transcript-box strong {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .score-badge {
+            background: #fef2f2;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .percentage-small {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #C20000;
+        }
+
+        .status {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 10px;
+        }
+
+        /* Final report */
+        .final-report {
+            background: #f9fafb;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .final-report h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            color: #1f2937;
+            font-size: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .report-line {
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .report-line:last-child {
+            border-bottom: none;
+        }
+
+        .report-line > div:first-child {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .report-score {
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .report-score.good {
+            background: #22c55e;
+            color: white;
+        }
+
+        .report-score.bad {
+            background: #C20000;
+            color: white;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        hr {
+            margin: 16px 0;
+            border: none;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #6b7280;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .micro-note {
+            font-size: 0.65rem;
+            color: #9ca3af;
+            margin-top: 8px;
+            display: block;
+        }
+
+        /* Container para garantir a centralização abaixo das abas */
+.whatsapp-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px; /* Espaçamento logo abaixo dos botões */
+    margin-bottom: 4px;
+}
+
+/* Estilo do hyperlink discreto */
+.whatsapp-link {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem; /* Tamanho pequeno e discreto */
+    font-weight: 500;
+    color: #6b7280; /* Cor cinza neutra para ser discreto */
+    text-decoration: underline; /* Aparência clássica de hyperlink */
+    transition: color 0.2s ease;
+}
+
+/* Efeito ao passar o mouse ou tocar */
+.whatsapp-link:hover, .whatsapp-link:active {
+    color: #C20000; /* Ganha a cor da sua marca ao interagir */
+}
+
+        /* Front-facing layer for system alerts (Toast Notification System) */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: calc(100% - 32px);
+            max-width: 350px;
+        }
+
+        .toast {
+            background: #333333;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideUp 0.3s ease forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <div class="header">
+        <h1>
+            <i data-lucide="message-square"></i>
+            English Role-Play
+        </h1>
+        <p>At the Airport — Practice the conversation</p>
+    </div>
+    <div class="content">
+
+        <!-- Interactively Switchable Progress Indicator -->
+        <div class="progress-section">
+            <div class="progress-steps" id="progressSteps">
+                <button class="step active" onclick="switchLine(0)"><i data-lucide="mic"></i> 1</button>
+                <button class="step" onclick="switchLine(1)"><i data-lucide="mic"></i> 2</button>
+                <button class="step" onclick="switchLine(2)"><i data-lucide="mic"></i> 3</button>
+                <button class="step" onclick="switchLine(3)"><i data-lucide="mic"></i> 4</button>
+                <button class="step" onclick="switchLine(4)"><i data-lucide="mic"></i> 5</button>
+            </div>
+            <!-- Link discreto para o WhatsApp -->
+    <div class="whatsapp-container">
+        <a href="https://wa.me/5516993272278" target="_blank" class="whatsapp-link">
+            Quero ser aluno da Di
+        </a>
+    </div>
+        </div>
+
+        <!-- Conversation Area -->
+        <div id="conversationArea">
+            <!-- Waiter's line -->
+            <div id="waiterLine" class="waiter-bubble">
+                <div class="waiter-header">
+                    <div class="waiter-header-left">
+                        <i data-lucide="briefcase"></i> Agent
+                    </div>
+                    <div class="waiter-actions">
+                        <button id="listenWaiterBtn" class="icon-only-btn" title="Ouvir frase">
+                            <i data-lucide="volume-2"></i>
+                        </button>
+                        <button id="toggleTranslationWaiter" class="text-btn">Ver tradução</button>
+                    </div>
+                </div>
+                <div class="waiter-text" id="waiterText">Good morning! Where are you flying to today?</div>
+            </div>
+
+            <!-- Student response area -->
+            <div class="student-response-area">
+                <div class="student-header">
+                    <span><i data-lucide="user"></i> YOUR RESPONSE</span>
+                    <button id="toggleTranslationStudent" class="text-btn">Ver tradução</button>
+                </div>
+                <div class="target-line">
+                    <button id="listenStudentBtn" class="icon-only-btn" title="Ouvir frase ideal" style="margin: 0;">
+                        <i data-lucide="volume-2"></i>
+                    </button>
+                    <span id="targetLine">"Good morning! I'm flying to London. Here is my passport."</span>
+                </div>
+                
+                <div class="mic-area">
+                    <button id="startBtn">
+                        <i data-lucide="mic"></i> Record answer
+                    </button>
+                    <div class="transcript-box">
+                        <strong><i data-lucide="volume-2"></i> You said:</strong>
+                        <span id="userSpeech" style="display: block; margin-top: 4px;">—</span>
+                    </div>
+                    <div id="statusMsg" class="status">Tap the button and speak clearly.</div>
+                </div>
+
+                <div id="resultArea" style="display: none;">
+                    <div class="score-badge">
+                        <strong>Accuracy</strong>
+                        <div id="scoreDisplay" class="percentage-small">0%</div>
+                        <div id="feedbackMsg" style="font-size: 0.75rem;"></div>
+                        <span class="micro-note">Nota: O motor de reconhecimento nativo pode apresentar variações devido a sotaques, ruídos locais ou hesitações na fala.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Button -->
+        <button id="nextBtn" class="next-btn" style="display: none;">
+            <i data-lucide="arrow-right"></i> Next
+        </button>
+
+        <!-- Final Report -->
+        <div id="finalReport" class="final-report hidden">
+            <h3><i data-lucide="file-text"></i> Conversation Summary</h3>
+            <div id="reportContent"></div>
+            <button id="restartBtn" style="margin-top: 16px; background: #374151; width: 100%;">
+                <i data-lucide="refresh-cw"></i> Practice Again
+            </button>
+        </div>
+
+        <hr>
+        <div class="footer-note">
+            <i data-lucide="info"></i> Desenvolvido por @dicarvalho.prof. 2026
+        </div>
+    </div>
+</div>
+
+<!-- Container layer for toasts alerts -->
+<div id="toastContainer" class="toast-container"></div>
+
+<script>
+    // ========== CONVERSATION DATA ==========
+    const conversation = [
+        {
+            waiterText: "Good morning! Where are you flying to today?",
+            waiterTranslation: "Bom dia! Para onde é o seu voo hoje?",
+            studentTarget: "Good morning! I'm flying to London. Here is my passport.",
+            studentTranslation: "Bom dia! Vou para Londres. Aqui está o meu passaporte.",
+            studentScore: null
+        },
+        {
+            waiterText: "Great, thank you. Are you checking any bags today, or just carrying on?",
+            waiterTranslation: "Ótimo, obrigado. Vai despachar alguma mala hoje ou apenas levar bagagem de mão?",
+            studentTarget: "Just this one suitcase to check, and I have my backpack as a carry-on.",
+            studentTranslation: "Só vou despachar esta mala, e estou com a minha mochila como bagagem de mão.",
+            studentScore: null
+        },
+        {
+            waiterText: "Perfect. Please place your suitcase on the scale... Great, it's under the weight limit. Would you prefer a window or an aisle seat?",
+            waiterTranslation: "Perfeito. Por favor, coloque a sua mala na balança... Ótimo, está abaixo do limite de peso. Você prefere assento na janela ou no corredor?",
+            studentTarget: "An aisle seat, please, if there is still one available.",
+            studentTranslation: "No corredor, por favor, se ainda houver algum disponível.",
+            studentScore: null
+        },
+        {
+            waiterText: "You're in luck, we have one. Here is your boarding pass. Your gate is B22, and boarding starts at 10:15 AM.",
+            waiterTranslation: "Está com sorte, temos sim. Aqui está o seu cartão de embarque. Seu portão é o B22 e o embarque começa às 10h15.",
+            studentTarget: "Thank you! Do I need to go through security right now?",
+            studentTranslation: "Obrigado! Preciso passar pelo controle de segurança agora?",
+            studentScore: null
+        },
+        {
+            waiterText: "Yes, security is just around the corner to your left. Have a safe flight!",
+            waiterTranslation: "Sim, a segurança fica logo ali dobrando a esquina à esquerda. Tenha uma ótima viagem!",
+            studentTarget: "Excellent. Thank you so much, have a great day!",
+            studentTranslation: "Excelente. Muito obrigado, tenha um ótimo dia!",
+            studentScore: null
+        }
+    ];
+
+    let currentLine = 0;
+    let isTranslationWaiterActive = false;
+    let isTranslationStudentActive = false;
+
+    // Toast function
+    function showToast(message, iconName = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i data-lucide="${iconName}"></i> <span>${message}</span>`;
+        container.appendChild(toast);
+        lucide.createIcons();
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // Speech Synthesis
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            
+            
+            
+            utterance.onstart = () => {
+                
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        } else {
+            showToast('Recurso de voz não suportado neste navegador. Abra usando um navegador padrão como o Google Chrome ou Microsoft Edge', 'alert-circle');
+        }
+    }
+
+    
+    const startBtn = document.getElementById('startBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const userSpeechSpan = document.getElementById('userSpeech');
+    const resultArea = document.getElementById('resultArea');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const feedbackMsg = document.getElementById('feedbackMsg');
+    const statusMsg = document.getElementById('statusMsg');
+    const targetLineSpan = document.getElementById('targetLine');
+    const waiterTextSpan = document.getElementById('waiterText');
+    
+    const listenWaiterBtn = document.getElementById('listenWaiterBtn');
+    const listenStudentBtn = document.getElementById('listenStudentBtn');
+    const toggleTranslationWaiter = document.getElementById('toggleTranslationWaiter');
+    const toggleTranslationStudent = document.getElementById('toggleTranslationStudent');
+    
+    const conversationArea = document.getElementById('conversationArea');
+    const finalReport = document.getElementById('finalReport');
+    const reportContent = document.getElementById('reportContent');
+
+
+    // Translation Toggles
+    toggleTranslationWaiter.addEventListener('click', () => {
+        isTranslationWaiterActive = !isTranslationWaiterActive;
+        const line = conversation[currentLine];
+        if (isTranslationWaiterActive) {
+            waiterTextSpan.textContent = line.waiterTranslation;
+            toggleTranslationWaiter.textContent = "Ver original";
+        } else {
+            waiterTextSpan.textContent = line.waiterText;
+            toggleTranslationWaiter.textContent = "Ver tradução";
+        }
+    });
+
+    toggleTranslationStudent.addEventListener('click', () => {
+        isTranslationStudentActive = !isTranslationStudentActive;
+        const line = conversation[currentLine];
+        if (isTranslationStudentActive) {
+            targetLineSpan.textContent = `"${line.studentTranslation}"`;
+            toggleTranslationStudent.textContent = "Ver original";
+        } else {
+            targetLineSpan.textContent = `"${line.studentTarget}"`;
+            toggleTranslationStudent.textContent = "Ver tradução";
+        }
+    });
+
+    // Audio Actions
+    listenWaiterBtn.addEventListener('click', () => {
+        speakText(conversation[currentLine].waiterText);
+    });
+
+    listenStudentBtn.addEventListener('click', () => {
+        speakText(conversation[currentLine].studentTarget);
+    });
+
+    function normalizeWords(text) {
+        return text.toLowerCase()
+            .replace(/[^\w\s']/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .split(/\s+/);
+    }
+
+    function calculateAccuracy(spokenText, targetText) {
+        const spokenWords = normalizeWords(spokenText);
+        const targetWords = normalizeWords(targetText);
+        
+        let correctCount = 0;
+        for (let i = 0; i < targetWords.length; i++) {
+            if (i < spokenWords.length && spokenWords[i] === targetWords[i]) {
+                correctCount++;
+            }
+        }
+        
+        const accuracy = Math.round((correctCount / targetWords.length) * 100);
+        return Math.min(100, accuracy);
+    }
+
+    // Interactive Tab Switching Functionality
+    window.switchLine = function(index) {
+        if (index >= 0 && index < conversation.length) {
+            // Restore visibility of conversation section in case we were on the report screen
+            conversationArea.classList.remove('hidden');
+            finalReport.classList.add('hidden');
+            
+            currentLine = index;
+            updateUIForLine();
+            
+        }
+    }
+
+    function updateUIForLine() {
+        const line = conversation[currentLine];
+        
+        isTranslationWaiterActive = false;
+        isTranslationStudentActive = false;
+        toggleTranslationWaiter.textContent = "Ver tradução";
+        toggleTranslationStudent.textContent = "Ver original";
+        
+        waiterTextSpan.textContent = line.waiterText;
+        targetLineSpan.textContent = `"${line.studentTarget}"`;
+        toggleTranslationStudent.textContent = "Ver tradução";
+        
+        // Handle results block display state for current index
+        if (line.studentScore !== null) {
+            displayScoreFeedback(line.studentScore, false);
+        } else {
+            resultArea.style.display = "none";
+            nextBtn.style.display = "none";
+            userSpeechSpan.innerHTML = "—";
+            statusMsg.innerHTML = "Tap the button and speak clearly.";
+        }
+        
+        // Refresh structural visual styles across all steps elements
+        const steps = document.querySelectorAll('.step');
+        steps.forEach((step, idx) => {
+            step.classList.remove('active', 'completed');
+            if (conversation[idx].studentScore !== null) {
+                step.classList.add('completed');
+            }
+            if (idx === currentLine) {
+                step.classList.add('active');
+            }
+        });
+        
+        lucide.createIcons();
+    }
+
+    function displayScoreFeedback(accuracy, updateScoreArray = true) {
+        scoreDisplay.innerHTML = `${accuracy}%`;
+        
+        let message = "";
+        if (accuracy === 100) message = "Perfect! Excellent!";
+        else if (accuracy >= 80) message = "Great job! Very close!";
+        else if (accuracy >= 70) message = "Good! You can continue.";
+        else if (accuracy >= 50) message = "Try again. Listen carefully.";
+        else message = "Practice one more time.";
+        
+        feedbackMsg.innerHTML = message;
+        resultArea.style.display = "block";
+        
+        if (updateScoreArray) {
+            conversation[currentLine].studentScore = accuracy;
+        }
+        
+        nextBtn.style.display = "flex";
+        if (currentLine < conversation.length - 1) {
+            nextBtn.innerHTML = '<i data-lucide="arrow-right"></i> Next';
+        } else {
+            nextBtn.innerHTML = '<i data-lucide="trophy"></i> See Final Report';
+        }
+        
+        const steps = document.querySelectorAll('.step');
+        steps[currentLine].classList.add('completed');
+        lucide.createIcons();
+    }
+
+    // Speech Recognition Setup
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        statusMsg.innerText = "Browser not supported. Use Chrome or Edge.";
+        startBtn.disabled = true;
+    }
+
+    let recognition = null;
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.continuous = false;
+        recognition.maxAlternatives = 1;
+    }
+
+    if (recognition) {
+        recognition.onstart = function() {
+            statusMsg.innerHTML = "Listening... speak now.";
+            startBtn.innerHTML = '<i data-lucide="radio"></i> Listening...';
+            lucide.createIcons();
+        };
+
+        recognition.onend = function() {
+            statusMsg.innerHTML = "Done. Tap button to try again.";
+            startBtn.innerHTML = '<i data-lucide="mic"></i> Record answer';
+            lucide.createIcons();
+        };
+
+        recognition.onresult = function(event) {
+            const last = event.results.length - 1;
+            const spokenText = event.results[last][0].transcript;
+            userSpeechSpan.innerText = `"${spokenText}"`;
+            
+            const targetText = conversation[currentLine].studentTarget;
+            const accuracy = calculateAccuracy(spokenText, targetText);
+            displayScoreFeedback(accuracy, true);
+            showToast('Gravação processada com sucesso!', 'check');
+        };
+
+        recognition.onerror = function(event) {
+            statusMsg.innerHTML = `Error: ${event.error}. Check mic.`;
+            startBtn.innerHTML = '<i data-lucide="mic"></i> Record answer';
+            showToast('Ocorreu um erro na captura.', 'alert-triangle');
+            lucide.createIcons();
+        };
+    }
+
+    startBtn.addEventListener('click', () => {
+        if (!recognition) return;
+        userSpeechSpan.innerHTML = "—";
+        resultArea.style.display = "none";
+        nextBtn.style.display = "none";
+        try {
+            recognition.start();
+        } catch(e) {
+            statusMsg.innerHTML = "Issue. Refresh page.";
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentLine < conversation.length - 1) {
+            currentLine++;
+            updateUIForLine();
+        } else {
+            showFinalReport();
+        }
+    });
+
+    function showFinalReport() {
+        conversationArea.classList.add('hidden');
+        finalReport.classList.remove('hidden');
+        
+        let totalScore = 0;
+        let html = '';
+        
+        conversation.forEach((line, idx) => {
+            const score = line.studentScore || 0;
+            totalScore += score;
+            const isGood = score >= 70;
+            html += `
+                <div class="report-line">
+                    <div>
+                        <strong>${idx + 1}. ${line.studentTarget.substring(0, 50)}</strong>
+                        <div style="font-size: 0.7rem; color: #6b7280;">${line.studentTranslation}</div>
+                    </div>
+                    <div class="report-score ${isGood ? 'good' : 'bad'}">${score}%</div>
+                </div>
+            `;
+        });
+        
+        const average = Math.round(totalScore / conversation.length);
+        
+        html = `
+            <div style="margin-bottom: 16px; padding: 12px; background: #fef2f2; border-radius: 16px; text-align: center;">
+                <strong>Average Accuracy</strong>
+                <div style="font-size: 1.8rem; font-weight: 700; color: #C20000;">${average}%</div>
+                <div style="font-size: 0.8rem;">${average >= 70 ? 'Great conversation practice!' : 'Keep practicing!'}</div>
+            </div>
+            ${html}
+        `;
+        
+        reportContent.innerHTML = html;
+        lucide.createIcons();
+    }
+
+    document.getElementById('restartBtn')?.addEventListener('click', () => {
+        conversation.forEach(line => line.studentScore = null);
+        currentLine = 0;
+        conversationArea.classList.remove('hidden');
+        finalReport.classList.add('hidden');
+        updateUIForLine();
+    });
+
+    lucide.createIcons();
+    updateUIForLine();
+</script>
+</body>
+</html>
