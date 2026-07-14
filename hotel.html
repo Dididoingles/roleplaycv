@@ -62,67 +62,6 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive Notice Layer (Loader/Splash Screen) */
-        .splash-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 20px; 
-            padding: 24px;
-            text-align: center;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-
-        .splash-content {
-            margin-top: 100px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .splash-title {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #C20000;
-            margin-bottom: 8px;
-        }
-
-        .splash-subtitle {
-            font-size: 1rem;
-            color: #333333;
-            margin-bottom: 40px;
-            font-weight: 400;
-            max-width: 480px;
-        }
-
-        .splash-footer {
-            font-size: 0.75rem;
-            color: #6b7280;
-            line-height: 1.6;
-            width: 100%;
-            margin-top:10px; 
-        }
-
-        .splash-footer a {
-            color: #C20000;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 20px;
-        }
 
         .header {
             background: #C20000;
@@ -166,12 +105,7 @@
             .header h1 {
                 font-size: 1.8rem;
             }
-            .splash-title {
-                font-size: 2.4rem;
-            }
-            .splash-subtitle {
-                font-size: 1.15rem;
-            }
+           
         }
 
         .progress-section {
@@ -596,22 +530,6 @@
 <body>
 
 <div class="card">
-    <!-- Responsive Notice panel (Splash Screen Layer) -->
-    <div id="splashScreen" class="splash-screen">
-        <div class="splash-content">
-            <h2 class="splash-title">Role Play Game</h2>
-            <p class="splash-subtitle">Simule uma conversa em Inglês no hotel</p>
-            <button id="startProjectBtn">
-                <i data-lucide="play"></i> Começar
-            </button>
-        </div>
-        <div class="splash-footer">
-            <p>Esta é uma ferramenta Beta em fase de testes, sugestões de melhoria são bem-vindas. Siga @dicarvalho.prof nas redes sociais</p>
-            <a href="mailto:englishwithdiandra@gmail.com">
-                <i data-lucide="mail"></i> Fale com a Di
-            </a>
-        </div>
-    </div>
 
     <div class="header">
         <h1>
@@ -795,8 +713,6 @@
         }
     }
 
-    const splashScreen = document.getElementById('splashScreen');
-    const startProjectBtn = document.getElementById('startProjectBtn');
     
     const startBtn = document.getElementById('startBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -817,11 +733,6 @@
     const finalReport = document.getElementById('finalReport');
     const reportContent = document.getElementById('reportContent');
 
-    // Splash Actions
-    startProjectBtn.addEventListener('click', () => {
-        splashScreen.classList.add('hidden');
-       
-    });
 
     // Translation Toggles
     toggleTranslationWaiter.addEventListener('click', () => {
