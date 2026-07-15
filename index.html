@@ -623,12 +623,12 @@
     // Configuração dos links de destino de cada card.
     // Substitua os links fictícios pelos links reais onde seus frames de roleplay estão hospedados!
     const linksConfig = {
-        hotel: "http://dididoingles.github.io/roleplaycv/hotel.html", 
-        restaurant: "http://dididoingles.github.io/roleplaycv/restaurant.html",
-        airport: "http://dididoingles.github.io/roleplaycv/airport.html",
-        directions: "http://dididoingles.github.io/roleplaycv/directions.html",
-        shopping: "http://dididoingles.github.io/roleplaycv/shop.html",
-        interview: "http://dididoingles.github.io/roleplaycv/interview.html"
+        hotel: "https://dididoingles.github.io/roleplaycv/hotel.html", 
+        restaurant: "https://dididoingles.github.io/roleplaycv/restaurant.html",
+        airport: "https://dididoingles.github.io/roleplaycv/airport.html",
+        directions: "https://dididoingles.github.io/roleplaycv/directions.html",
+        shopping: "https://dididoingles.github.io/roleplaycv/shop.html",
+        interview: "https://dididoingles.github.io/roleplaycv/interview.html"
     };
 
     const searchInput = document.getElementById('searchInput');
@@ -650,8 +650,8 @@
             const targetUrl = linksConfig[identifier] || "#";
             
             // Abre o link do simulador correspondente. Como costuma rodar dentro de iFrame,
-            // podemos abrir em uma nova aba (_blank) ou manter na mesma página se desejar (_self).
-            window.open(targetUrl, '_self');
+            
+            window.location.href = targetUrl;
         });
     });
 
