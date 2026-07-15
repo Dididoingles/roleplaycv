@@ -525,6 +525,54 @@
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
+        /* Container do cabeçalho como referência de posicionamento */
+.header {
+    position: relative;
+}
+
+/* Elemento Span agindo como botão, imune às regras globais de 'button' */
+.back-span-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+    transition: all 0.2s ease;
+    font-family: 'Poppins', sans-serif;
+    z-index: 10;
+}
+
+/* Efeitos de interação amigáveis */
+.back-span-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.back-span-btn:active {
+    transform: translateY(1px);
+}
+
+/* Ajuste responsivo seguro apenas para celulares */
+@media (max-width: 480px) {
+    .header {
+        padding-top: 60px !important; /* Cria um espaço no topo sem quebrar o alinhamento do h1 */
+    }
+    .back-span-btn {
+        top: 16px;
+        right: 16px;
+    }
+}
     </style>
 </head>
 <body>
@@ -532,6 +580,11 @@
 <div class="card">
 
     <div class="header">
+        <!-- Span interativo que simula um botão perfeitamente -->
+        <span class="back-span-btn" role="button" onclick="window.history.back()" tabindex="0">
+            <i data-lucide="arrow-left"></i> Voltar
+        </span>
+
         <h1>
             <i data-lucide="message-square"></i>
             English Role-Play
